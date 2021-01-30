@@ -5,28 +5,13 @@ import Data.Maybe
 readFloat :: String -> Float  
 readFloat = read
 
-invalidOp :: Float -> Float -> Maybe Float  
-invalidOp x y = Nothing 
-
-add :: Float -> Float -> Maybe Float 
-add x y = Just (x + y)
-
-sub :: Float -> Float  -> Maybe Float 
-sub x y = Just (x - y)
-
-mul :: Float -> Float -> Maybe Float 
-mul x y = Just (x * y)
-
-div :: Float -> Float -> Maybe Float 
-div x y = Just (x / y)
-
 readOperation :: String -> (Float -> Float -> Maybe Float )
 readOperation x = case x of
-                    "+" -> add
-                    "-" -> sub
-                    "*" -> mul
-                    "/" -> Main.div -- yes i know.  I want to program as many functions as i can so i dont use the standard one
-                    _ -> invalidOp
+                    "+" -> \x y -> Just (x + y)
+                    "-" -> \x y -> Just (x - y)
+                    "*" -> \x y -> Just (x * y)
+                    "/" -> \x y -> Just (x / y)
+                    _ -> \_ _ -> Nothing 
 
 main :: IO ()
 main = do
