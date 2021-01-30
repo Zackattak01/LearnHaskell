@@ -5,12 +5,22 @@ import Data.Maybe
 readFloat :: String -> Float  
 readFloat = read
 
-readOperation :: String -> (Float -> Float -> Maybe Float )
+toInt :: Float -> Int 
+toInt = round
+
+toFloat :: Int -> Float 
+toFloat = fromIntegral
+
+mod :: Float  -> Float  -> Maybe Float  
+mod x y = Just (toFloat (Prelude.mod (toInt x) (toInt y)))
+
+readOperation :: String -> (Float -> Float -> Maybe Float  )
 readOperation x = case x of
                     "+" -> \x y -> Just (x + y)
                     "-" -> \x y -> Just (x - y)
                     "*" -> \x y -> Just (x * y)
                     "/" -> \x y -> Just (x / y)
+                    "%" -> Main.mod
                     _ -> \_ _ -> Nothing 
 
 main :: IO ()
