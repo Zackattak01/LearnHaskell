@@ -1,7 +1,32 @@
 module Main where
 
+import Data.Maybe
+
 readFloat :: String -> Float  
 readFloat = read
+
+invalidOp :: Float -> Float -> Maybe Float  
+invalidOp x y = Nothing 
+
+add :: Float -> Float -> Maybe Float 
+add x y = Just (x + y)
+
+sub :: Float -> Float  -> Maybe Float 
+sub x y = Just (x - y)
+
+mul :: Float -> Float -> Maybe Float 
+mul x y = Just (x * y)
+
+div :: Float -> Float -> Maybe Float 
+div x y = Just (x / y)
+
+readOperation :: String -> (Float -> Float -> Maybe Float )
+readOperation x = case x of
+                    "+" -> add
+                    "-" -> sub
+                    "*" -> mul
+                    "/" -> Main.div -- yes i know.  I want to program as many functions as i can so i dont use the standard one
+                    _ -> invalidOp
 
 main :: IO ()
 main = do
@@ -11,25 +36,18 @@ main = do
     putStrLn "Enter another number"
     inputStr2 <- getLine 
     putStrLn "Enter operation"
-    inputChar <- getLine
+    inputOp <- getLine
 
     let num1 = readFloat inputStr
     let num2 = readFloat inputStr2
-    let op = inputChar
+    let op = readOperation inputOp
 
-    let printStr = show num1 ++ " " ++ op ++ " " ++ show num2 ++ " = "
-    putStr printStr
+    let result = op num1 num2
 
-    if op == "+"
-        then print(num1 + num2)
-    else if op == "-"
-        then print(num1 - num2)
-    else if op == "*"
-        then print(num1 * num2)
-    else if op == "/"
-        then do
-            let result = num1 / num2  
-            print(show result)
+    if isNothing result 
+        then putStrLn "Invalid Operation!"
     else
-        putStrLn  "Invalid Operation!"
-
+        do
+        let resultNumber = fromJust result
+        let printStr =show num1 ++ " " ++ inputOp ++ " " ++ show num2 ++ " = " ++ show resultNumber
+        putStrLn printStr
